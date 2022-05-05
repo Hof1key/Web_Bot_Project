@@ -125,7 +125,7 @@ for event in longpoll.listen():
 
             txt = str(event.text)
 
-            if not event.to_me and not txt[0] == '!':
+            if not event.to_me:
                 continue
 
             if txt.startswith('!'):
@@ -149,11 +149,12 @@ for event in longpoll.listen():
                     vk_api = vk.get_api()
 
                     try:
-                        session_api = vk.get_api()
 
-                        members = session_api.messages.getConversationMembers(peer_id=event.object.peer_id)
+                        members = vk_api.messages.getConversationMembers(peer_id=event.peer_id)
 
                         for i in members["items"]:
+
+                            admin = False
 
                             if i["member_id"] == user_id:
                                 admin = i.get('is_admin', False)
@@ -161,11 +162,14 @@ for event in longpoll.listen():
                             if admin == True:
                                 ans = vk_api.messages.removeChatUser(chat_id=event.chat_id,
                                                                      member_id=id)
+                                continue
+
                             else:
                                 ans = 'Вы не являетесь администратором сообщества!'
 
                     except Exception as ex:
                         ans = f'Возникла ошибка {ex.__class__.__name__}.'
+                        print(ex)
 
                     if ans == 1:
 
@@ -187,7 +191,7 @@ for event in longpoll.listen():
 
                     session_api = vk.get_api()
 
-                    members = session_api.messages.getConversationMembers(peer_id=event.object.peer_id)
+                    members = session_api.messages.getConversationMembers(peer_id=event.peer_id)
 
                     for i in members["items"]:
 
@@ -209,6 +213,8 @@ for event in longpoll.listen():
                                 id = id[2:]
 
                             del muted_users[id]
+
+                            continue
 
                         else:
                             ans = 'Вы не являетесь администратором сообщества!'
@@ -247,7 +253,7 @@ for event in longpoll.listen():
 
             # write_msg(event.chat_id, txt)
 
-        elif event.from_user:
+        '''elif event.from_user:
 
             if not event.to_me:
                 continue
@@ -327,4 +333,4 @@ for event in longpoll.listen():
                                   keyboard=open(kb1_name, "r",
                                                 encoding="UTF-8").read())
                 else:
-                    pass
+                    pass'''
