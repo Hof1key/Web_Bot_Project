@@ -229,8 +229,43 @@ for event in longpoll.listen():
 
                     if muted_users[user] > time_now:
 
-                        write_msg(chat_id=event.chat_id,
-                                  message=f'!kick @id{user}')
+                        '''write_msg(chat_id=event.chat_id,
+                                  message=f'!kick @id{user}')'''
+
+                        vk_api = vk.get_api()
+
+                        try:
+
+                            members = vk_api.messages.getConversationMembers(peer_id=event.peer_id)
+
+                            for i in members["items"]:
+
+                                admin = False
+
+                                if i["member_id"] == user_id:
+                                    admin = i.get('is_admin', False)
+
+                                if admin == True:
+                                    ans = vk_api.messages.removeChatUser(chat_id=event.chat_id,
+                                                                         member_id=user)
+                                    continue
+
+                                else:
+                                    ans = 'Вы не являетесь администратором сообщества!'
+
+                        except Exception as ex:
+                            ans = f'Возникла ошибка {ex.__class__.__name__}.'
+                            print(ex)
+
+                        if ans == 1:
+
+                            user_from = event.user_id
+                            write_msg(chat_id=event.chat_id,
+                                      message=f'Пользователь @id{id} успешно выгнан из беседы!')
+
+                        else:
+                            write_msg(chat_id=event.chat_id,
+                                      message=ans)
 
                     else:
 
@@ -253,7 +288,7 @@ for event in longpoll.listen():
 
             # write_msg(event.chat_id, txt)
 
-        '''elif event.from_user:
+        elif event.from_user:
 
             if not event.to_me:
                 continue
@@ -333,4 +368,4 @@ for event in longpoll.listen():
                                   keyboard=open(kb1_name, "r",
                                                 encoding="UTF-8").read())
                 else:
-                    pass'''
+                    pass
