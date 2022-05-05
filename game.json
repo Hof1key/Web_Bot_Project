@@ -1,0 +1,26 @@
+{
+  "one_time": false,
+  "buttons": [
+    [{
+      "action": {
+        "type": "text",
+        "label": "Четное"
+      },
+      "color": "positive"
+    },
+      {
+        "action": {
+          "type": "text",
+          "label": "Нечетное"
+        },
+        "color": "positive"
+      }],
+    [{
+      "action": {
+        "type": "text",
+        "label": "Вернуться назад"
+      },
+      "color": "default"
+    }]
+  ]
+}
