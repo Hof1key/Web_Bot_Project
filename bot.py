@@ -99,7 +99,7 @@ def get_statistics(database, user_id):
 
 
 # API-ключ созданный ранее
-token = "455abef9e5a275893cf3edf18701cc8f77b92896c0803aafc210fc1a58d2393f96916a58df187fbf21bc1"
+token = "..."
 
 # Авторизуемся как сообщество
 vk = vk_api.VkApi(token=token)
